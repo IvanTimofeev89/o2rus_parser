@@ -1,0 +1,64 @@
+[tool.poetry]
+name = "o2rus"
+version = "0.1.0"
+description = ""
+authors = ["Ivan Timofeev <timofeevis89@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+sqlalchemy = "^2.0.28"
+pymupdf = "^1.23.26"
+psycopg2-binary = "^2.9.9"
+types-psycopg2 = "^2.9.21.20240311"
+alembic = "^1.13.1"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.2.0"
+isort = "^5.13.2"
+flake8 = "^7.0.0"
+flake8-pyproject = "^1.2.3"
+mypy = "^1.9.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 100
+target-version = ['py311']
+exclude = '''
+(
+  /(
+      \.eggs         # exclude a few common directories in the
+    | \.git          # root of the project
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+  )/
+  | foo.py           # also separately exclude a file named foo.py in
+                     # the root of the project
+)
+'''
+
+[tool.flake8]
+max-line-length = 100
+exclude = [
+    ".git",
+    "__pycache__",
+    ".venv",
+    ".mypy_cache",
+]
+extend-ignore = "E203, E501"
+
+[tool.isort]
+profile = "black"
+
+[tool.mypy]
+exclude = [".venv", "__pycache__", ".git"]

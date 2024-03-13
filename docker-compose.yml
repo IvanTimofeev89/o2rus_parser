@@ -1,0 +1,59 @@
+version: "2.24.0"
+
+volumes:
+    pgdata:
+
+networks:
+    db_net:
+    parser_net:
+
+services:
+    postgresparserdb:
+        container_name: postgres_container
+        image: postgres:latest
+        restart: unless-stopped
+        volumes:
+            - pgdata:/var/lib/postgresql/data
+        networks:
+            - db_net
+            - parser_net
+        ports:
+            - 5432:5432
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=6802425
+            - POSTGRES_DB=pdf_parsing
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U postgres -d pdf_parsing"]
+            interval: 30s
+            timeout: 5s
+            retries: 5
+            start_period: 10s
+
+    parser:
+        container_name: parser_container
+        build: .
+        networks:
+            - parser_net
+        depends_on:
+            - postgresparserdb
+
+    pg_admin:
+        container_name: pgadmin_container
+        image: dpage/pgadmin4:8.4
+        restart: always
+        ports:
+            - 5050:80
+        networks:
+            - db_net
+        depends_on:
+            - postgresparserdb
+        environment:
+            - PGADMIN_DEFAULT_EMAIL=some_email@yandex.ru
+            - PGADMIN_DEFAULT_PASSWORD=6802425
+            - PGADMIN_CONFIG_SERVER_MODE=False
+        deploy:
+            resources:
+                limits:
+                    cpus: "0.5"
+                    memory: 1G
