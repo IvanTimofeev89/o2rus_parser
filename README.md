@@ -11,7 +11,7 @@
   + maintenance database: pdf_parsing
   + username: postgres
   + password: 6802425
-+ Данные для подключения к GPAdmin4 можно изменить в файле .evn
++ Данные для подключения к GPAdmin4 можно изменить в файле docker-compose.yml
 + Исходный PDF файл с именем SAE J1939-71.pdf должен находится на том же уровне, что и main.py
 
 
